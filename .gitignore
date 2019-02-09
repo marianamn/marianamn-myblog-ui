@@ -1,0 +1,9 @@
+# dependencies
+node_modules
+.git
+.vscode
+.env
+
+public/src/**/*.js
+public/src/**/*.map
+dist/
