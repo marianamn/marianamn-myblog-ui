@@ -55,11 +55,11 @@ export interface State {
 }
 
 export default class MenuSection extends React.Component<Props, State> {
-  constructor(props: Props, state: State){
+  constructor(props: Props, state: State) {
     super(props, state);
-    this.state={
+    this.state = {
       isToggled: false,
-    }
+    };
   }
 
   private menuRef: any;
@@ -78,19 +78,20 @@ export default class MenuSection extends React.Component<Props, State> {
         {this.props.isMobile ? (
           <Wrapper ref={(comp: any) => (this.menuRef = comp)}>
             <LogoContainer>
-              {!this.state.isToggled
+              {!this.state.isToggled ? (
                 // tslint:disable-next-line:jsx-no-lambda
-                ? <Menu className="icon" onClick={() => this.menuToggle()}/>
+                <Menu className="icon" onClick={() => this.menuToggle()} />
+              ) : (
                 // tslint:disable-next-line:jsx-no-lambda
-                : <Close className="icon" onClick={() => this.menuToggle()}/>
-              }
+                <Close className="icon" onClick={() => this.menuToggle()} />
+              )}
               <Link to={"/"}>
                 <Image src={logoWhite} />
               </Link>
             </LogoContainer>
-            {this.state.isToggled &&
+            {this.state.isToggled && (
               <div>
-                <MenuList isMobile={this.props.isMobile} closeMenu={this.closeMenu}/>
+                <MenuList isMobile={this.props.isMobile} closeMenu={this.closeMenu} />
                 <SocialIcons
                   socialMediaLinks={socialMediaLinks}
                   color="#ffffff"
@@ -98,7 +99,7 @@ export default class MenuSection extends React.Component<Props, State> {
                   isMobile={this.props.isMobile}
                 />
               </div>
-            }
+            )}
           </Wrapper>
         ) : (
           <MenuList isMobile={this.props.isMobile} />
@@ -109,11 +110,11 @@ export default class MenuSection extends React.Component<Props, State> {
 
   private readonly menuToggle = () => {
     this.setState({ isToggled: !this.state.isToggled });
-  }
+  };
 
   private readonly closeMenu = () => {
     this.setState({ isToggled: false });
-  }
+  };
 
   private readonly handleClickOutside = (event: any) => {
     const menuNode = ReactDOM.findDOMNode(this.menuRef);

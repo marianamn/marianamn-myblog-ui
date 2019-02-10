@@ -10,4 +10,4 @@ ReactDom.render(
     <App />
   </Router>,
   root,
- );
+);

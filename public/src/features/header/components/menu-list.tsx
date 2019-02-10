@@ -84,21 +84,12 @@ const MenuList = (props: Props) => {
       </ListItem>
 
       <ListItem
-        className={props.location.pathname === "/login" && "active"}
+        className={(props.location.pathname === "/login" || props.location.pathname === "/register") && "active"}
         isMobile={props.isMobile}
         // tslint:disable-next-line:jsx-no-lambda
         onClick={() => props.closeMenu && props.closeMenu()}
       >
-        <Link to="/login">Регистрация</Link>
-      </ListItem>
-
-      <ListItem
-        className={props.location.pathname === "/register" && "active"}
-        isMobile={props.isMobile}
-        // tslint:disable-next-line:jsx-no-lambda
-        onClick={() => props.closeMenu && props.closeMenu()}
-      >
-        <Link to="/register">Вход</Link>
+        <Link to="/login">Вход</Link>
       </ListItem>
     </List>
   );

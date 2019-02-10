@@ -12,7 +12,7 @@ export interface SocialIconsContainerProps {
 export const SocialIconsContainer = styled<SocialIconsContainerProps, "section">("section")`
   display: flex;
   justify-content: space-around;
-  width: ${({ isMobile }) => (isMobile && "25%")};
+  width: ${({ isMobile }) => isMobile && "25%"};
 `;
 
 export interface IconProps {

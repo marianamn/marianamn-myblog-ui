@@ -4,7 +4,7 @@ import { socialMediaLinks } from "../../constants";
 import { SocialIcons } from "./components/social-icons";
 import { Logo } from "./components/logo";
 import { SearchComponent as Search } from "./components/search";
-import MenuSection  from "./components/menu";
+import MenuSection from "./components/menu";
 
 export interface LogoContainerProps {
   readonly isMobile?: boolean;
@@ -28,11 +28,7 @@ export default class Header extends React.Component<Props, {}> {
     return (
       <section>
         <LogoContainer isMobile={this.props.isMobile}>
-          <SocialIcons
-            socialMediaLinks={socialMediaLinks}
-            color="#000000"
-            hoverColor="#cca335"
-          />
+          <SocialIcons socialMediaLinks={socialMediaLinks} color="#000000" hoverColor="#cca335" />
           <Logo />
           <Search />
         </LogoContainer>

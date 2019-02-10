@@ -29,7 +29,8 @@ export default class Layout extends React.Component<{}, State> {
 
   render(): JSX.Element {
     const isMobile = this.state.containerWidth <= mobileResolution;
-    const isTablet = this.state.containerWidth > mobileResolution && this.state.containerWidth <= tabletResolution;
+    const isTablet =
+      this.state.containerWidth > mobileResolution && this.state.containerWidth <= tabletResolution;
 
     return (
       <section>
