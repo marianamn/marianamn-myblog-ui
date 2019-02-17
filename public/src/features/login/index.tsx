@@ -1,11 +1,26 @@
 import * as React from "react";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { mobileResolution, tabletResolution } from "../../constants";
+import { User } from "../../interfaces";
+
 import { Title } from "../../common/title";
 import { FormGroup } from "../../common/form-group";
 import { Button } from "../../common/button";
 import { Error } from "../../common/error";
-import { Link } from "react-router-dom";
+
+import { ApplicationState } from "../../store";
+import { LoginAction, login, Actions } from "./action";
+import {
+  selectIsLoading,
+  selectRequestSuccess,
+  selectRequestMessage,
+  selectToken,
+  selectUser,
+  selectError,
+} from "./selectors";
 
 export const FormContainer = styled("div")`
   margin: 50px 0;
@@ -32,6 +47,16 @@ export const RegisterLabel = styled("div")`
   }
 `;
 
+interface Props {
+  readonly isLoading: boolean;
+  readonly requestSuccess: boolean;
+  readonly requestMessage: string;
+  readonly token?: string;
+  readonly user?: User;
+  readonly error?: string;
+  readonly login: (email: string, password: string) => LoginAction;
+}
+
 interface State {
   readonly containerWidth: number;
   readonly email: string;
@@ -48,8 +73,8 @@ interface State {
   };
 }
 
-export default class Login extends React.Component<{}, State> {
-  constructor(props: {}, state: State) {
+class Login extends React.Component<Props, State> {
+  constructor(props: Props, state: State) {
     super(props, state);
     this.state = {
       containerWidth: 0,
@@ -84,18 +109,14 @@ export default class Login extends React.Component<{}, State> {
 
     return (
       <FormContainer>
-        <Form
-          isMobile={isMobile}
-          isTablet={isTablet}
-          onSubmit={this.login}
-        >
+        <Form isMobile={isMobile} isTablet={isTablet} onSubmit={this.login}>
           <Title text="Вписване" />
           <FormGroup
             label="Имейл"
             name="email"
             inputType="email"
             isRequired
-            validateField={this.validateEmail}
+            setValue={this.setEmail}
           />
           {!this.state.validateFields.email.isValid && (
             <Error text={this.state.validateFields.email.message} />
@@ -106,12 +127,12 @@ export default class Login extends React.Component<{}, State> {
             name="password"
             inputType="password"
             isRequired
-            validateField={this.validatePassword}
+            setValue={this.setPassword}
           />
           {!this.state.validateFields.password.isValid && (
             <Error text={this.state.validateFields.password.message} />
           )}
-          <Button text="Вход"/>
+          <Button text="Вход" />
 
           <RegisterLabel>
             Нямаш регистрация? Регистрирай се <Link to="/register">тук</Link>.
@@ -125,8 +146,18 @@ export default class Login extends React.Component<{}, State> {
     this.setState({ containerWidth: window.innerWidth });
   };
 
-  private readonly validateEmail = (e: any): void => {
-    const email = e.target.value;
+  private readonly setEmail = (e: any): void => {
+    this.setState({
+      email: e.target.value,
+    });
+  };
+
+  private readonly validateEmail = (
+    email: string,
+  ): {
+    isValid: boolean;
+    message: string;
+  } => {
     let isFieldValid = this.state.validateFields.email.isValid;
     let errorMessage = this.state.validateFields.email.message;
 
@@ -145,20 +176,24 @@ export default class Login extends React.Component<{}, State> {
       errorMessage = "";
     }
 
+    return {
+      isValid: isFieldValid,
+      message: errorMessage,
+    };
+  };
+
+  private readonly setPassword = (e: any): void => {
     this.setState({
-      validateFields: {
-        ...this.state.validateFields,
-        email: {
-          isValid: isFieldValid,
-          message: errorMessage,
-        },
-      },
-      email: e.target.value,
+      password: e.target.value,
     });
   };
 
-  private readonly validatePassword = (e: any): void => {
-    const password = e.target.value;
+  private readonly validatePassword = (
+    password: string,
+  ): {
+    isValid: boolean;
+    message: string;
+  } => {
     let isFieldValid = this.state.validateFields.password.isValid;
     let errorMessage = this.state.validateFields.password.message;
 
@@ -173,24 +208,72 @@ export default class Login extends React.Component<{}, State> {
       errorMessage = "";
     }
 
-    this.setState({
-      validateFields: {
-        ...this.state.validateFields,
-        password: {
-          isValid: isFieldValid,
-          message: errorMessage,
-        },
-      },
-      password: e.target.value,
-    });
+    return {
+      isValid: isFieldValid,
+      message: errorMessage,
+    };
+
+    // this.setState({
+    //   validateFields: {
+    //     ...this.state.validateFields,
+    //     password: {
+    //       isValid: isFieldValid,
+    //       message: errorMessage,
+    //     },
+    //   },
+    // });
   };
 
   private readonly login = (event: any): void => {
     event.preventDefault();
-    const newState = {
-      email: this.state.email,
-      password: this.state.password,
-    };
-    console.log(newState);
+    event.stopPropagation();
+    const emailValidation = this.validateEmail(this.state.email);
+    const passwordValidation = this.validatePassword(this.state.password);
+
+    if (emailValidation.isValid && passwordValidation.isValid) {
+      this.props.login(this.state.email, this.state.password);
+    } else {
+      if (!emailValidation.isValid) {
+        this.setState({
+          validateFields: {
+            ...this.state.validateFields,
+            email: {
+              isValid: emailValidation.isValid,
+              message: emailValidation.message,
+            },
+          },
+        });
+      }
+
+      if (!passwordValidation.isValid) {
+        this.setState({
+          validateFields: {
+            ...this.state.validateFields,
+            password: {
+              isValid: passwordValidation.isValid,
+              message: passwordValidation.message,
+            },
+          },
+        });
+      }
+    }
   };
 }
+
+const mapStateToProps = ({ loginState }: ApplicationState): Partial<Props> => ({
+  isLoading: selectIsLoading(loginState),
+  requestSuccess: selectRequestSuccess(loginState),
+  requestMessage: selectRequestMessage(loginState),
+  token: selectToken(loginState),
+  user: selectUser(loginState),
+  error: selectError(loginState),
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Actions>): Partial<Props> => ({
+  login: (email: string, password: string) => dispatch(login(email, password)),
+});
+
+export default connect<Partial<Props>, Partial<Props>, Partial<Props>, ApplicationState>(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Login);

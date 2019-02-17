@@ -12,7 +12,5 @@ export interface Props {
 }
 
 export const Error = (props: Props) => {
-  return (
-    <ErrorContainer>{props.text}</ErrorContainer>
-  );
+  return <ErrorContainer>{props.text}</ErrorContainer>;
 };

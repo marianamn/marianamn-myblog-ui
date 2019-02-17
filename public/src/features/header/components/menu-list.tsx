@@ -84,7 +84,10 @@ const MenuList = (props: Props) => {
       </ListItem>
 
       <ListItem
-        className={(props.location.pathname === "/login" || props.location.pathname === "/register") && "active"}
+        className={
+          (props.location.pathname === "/login" || props.location.pathname === "/register") &&
+          "active"
+        }
         isMobile={props.isMobile}
         // tslint:disable-next-line:jsx-no-lambda
         onClick={() => props.closeMenu && props.closeMenu()}

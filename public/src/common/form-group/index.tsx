@@ -30,7 +30,7 @@ export interface Props {
   readonly name: string;
   readonly inputType: string;
   readonly isRequired: boolean;
-  readonly validateField: (e: any) => void;
+  readonly setValue: (e: any) => void;
 }
 
 export const FormGroup = (props: Props) => {
@@ -42,7 +42,7 @@ export const FormGroup = (props: Props) => {
         id={props.name}
         type={props.inputType}
         // tslint:disable-next-line:jsx-no-lambda
-        onChange={e => props.validateField(e)}
+        onChange={e => props.setValue(e)}
       />
     </FormGroupContainer>
   );

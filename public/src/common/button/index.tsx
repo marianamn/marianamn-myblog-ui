@@ -21,7 +21,5 @@ export interface Props {
 }
 
 export const Button = (props: Props) => {
-  return (
-    <ButtonContainer type="submit" value={props.text} />
-  );
+  return <ButtonContainer type="submit" value={props.text} />;
 };

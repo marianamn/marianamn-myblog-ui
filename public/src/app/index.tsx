@@ -11,7 +11,7 @@ injectGlobal`
 
   @font-face {
     font-family: PlayfairDisplay-Regular;
-    src: url("assets/fonts/PlayfairDisplay-Regular.otf") format("opentype");
+    src: url("assets/fonts/PlayfairDisplay-Regular.ttf") format("opentype");
   }
 
   @font-face {

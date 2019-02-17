@@ -24,7 +24,7 @@ export const Form = styled<FormProps, "form">("form")`
 
 interface State {
   readonly containerWidth: number;
-  readonly name: string,
+  readonly name: string;
   readonly email: string;
   readonly password: string;
   readonly picture: any;
@@ -86,7 +86,7 @@ export default class Register extends React.Component<{}, State> {
 
     return (
       <FormContainer>
-         {/* <form id="uploadForm" enctype="multipart/form-data" method="post">
+        {/* <form id="uploadForm" enctype="multipart/form-data" method="post">
           <input type="file" name="picture" />
           <input type="submit" value="Upload File" name="submit">
         </form> */}
@@ -105,7 +105,7 @@ export default class Register extends React.Component<{}, State> {
             name="mane"
             inputType="text"
             isRequired
-            validateField={this.validateName}
+            setValue={this.validateName}
           />
           {!this.state.validateFields.name.isValid && (
             <Error text={this.state.validateFields.name.message} />
@@ -116,7 +116,7 @@ export default class Register extends React.Component<{}, State> {
             name="email"
             inputType="email"
             isRequired
-            validateField={this.validateEmail}
+            setValue={this.validateEmail}
           />
           {!this.state.validateFields.email.isValid && (
             <Error text={this.state.validateFields.email.message} />
@@ -127,16 +127,15 @@ export default class Register extends React.Component<{}, State> {
             name="password"
             inputType="password"
             isRequired
-            validateField={this.validatePassword}
+            setValue={this.validatePassword}
           />
           {!this.state.validateFields.password.isValid && (
             <Error text={this.state.validateFields.password.message} />
           )}
 
-          <ImageFormGroup validateField={this.validateImage}/>
+          <ImageFormGroup validateField={this.validateImage} />
 
-
-          <Button text="Регистрация"/>
+          <Button text="Регистрация" />
         </Form>
         {/* <form id="uploadForm" enctype="multipart/form-data" method="post">
           <input type="file" name="picture" />
@@ -242,7 +241,7 @@ export default class Register extends React.Component<{}, State> {
     this.setState({
       picture: e.target.value,
     });
-  }
+  };
 
   private readonly register = (event: any): void => {
     event.preventDefault();
@@ -252,6 +251,5 @@ export default class Register extends React.Component<{}, State> {
       password: this.state.password,
       picture: this.state.picture,
     };
-    console.log(newState);
   };
 }
