@@ -6,7 +6,6 @@ export interface State {
   readonly isLoading: boolean;
   readonly requestSuccess: boolean,
   readonly requestMessage: string,
-  readonly token?: string,
   readonly user?: User;
   readonly error?: string;
 }
@@ -30,15 +29,18 @@ export const loginReducer: Reducer<State> = (state = initialState, action) => {
         ...state,
         isLoading: false,
         user: action.payload.user,
-        token: action.payload.token,
-        requestSuccess: action.payload.requestSuccess,
-        requestMessage: action.payload.requestMessage,
+        requestSuccess: action.payload.success,
+        requestMessage: action.payload.message,
+        error: action.payload.errorMessage,
       };
     case ActionTypes.LOGIN_ERROR:
+    console.log(action.payload)
       return {
         ...state,
-        requestSuccess: action.payload.requestSuccess,
-        requestMessage: action.payload.requestMessage,
+        isLoading: false,
+        user: undefined,
+        requestSuccess: action.payload.success,
+        requestMessage: action.payload.message,
         error: action.payload.errorMessage,
       };
     default:

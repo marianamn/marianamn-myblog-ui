@@ -14,3 +14,12 @@ export const socialMediaLinks: SocialMediaLinks = {
 // Logo
 export const logoBlack = "assets/images/Logo-black.png";
 export const logoWhite = "assets/images/Logo-white.png";
+
+// Validation
+export const passwordMinLength = 6;
+export const errorMessages = {
+  passwordRequired: "Паролата е задължително поле!",
+  passwordLengthError: `Паролата трябва да бъде поне ${passwordMinLength} символа!`,
+  emailRequired: "Имейлът е задължително поле!",
+  emailWrongFormat: "Въведеният имейл е в грешен формат!",
+}

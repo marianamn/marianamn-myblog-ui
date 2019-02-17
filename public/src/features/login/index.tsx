@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { mobileResolution, tabletResolution } from "../../constants";
 import { User } from "../../interfaces";
 
+import { FormContainer, Form, RegisterLabel } from "./styles";
+import { validateEmail, validatePassword } from "../../utils/validation";
 import { Title } from "../../common/title";
 import { FormGroup } from "../../common/form-group";
 import { Button } from "../../common/button";
@@ -17,35 +18,9 @@ import {
   selectIsLoading,
   selectRequestSuccess,
   selectRequestMessage,
-  selectToken,
   selectUser,
   selectError,
 } from "./selectors";
-
-export const FormContainer = styled("div")`
-  margin: 50px 0;
-`;
-
-export interface FormProps {
-  readonly isMobile: boolean;
-  readonly isTablet: boolean;
-}
-
-export const Form = styled<FormProps, "form">("form")`
-  width: ${({ isMobile, isTablet }) => (isMobile || isTablet ? "80%" : "50%")};
-  margin: 0 auto;
-`;
-
-export const RegisterLabel = styled("div")`
-  font-size: 0.9em;
-  color: #313131;
-  margin-top: 10px;
-
-  a {
-    text-decoration: none;
-    color: #2c2cec;
-  }
-`;
 
 interface Props {
   readonly isLoading: boolean;
@@ -107,6 +82,8 @@ class Login extends React.Component<Props, State> {
     const isTablet =
       this.state.containerWidth > mobileResolution && this.state.containerWidth <= tabletResolution;
 
+    console.log(this.props);
+
     return (
       <FormContainer>
         <Form isMobile={isMobile} isTablet={isTablet} onSubmit={this.login}>
@@ -152,83 +129,17 @@ class Login extends React.Component<Props, State> {
     });
   };
 
-  private readonly validateEmail = (
-    email: string,
-  ): {
-    isValid: boolean;
-    message: string;
-  } => {
-    let isFieldValid = this.state.validateFields.email.isValid;
-    let errorMessage = this.state.validateFields.email.message;
-
-    if (email.trim() === "") {
-      isFieldValid = false;
-      errorMessage = "Имейлът е задължително поле!";
-    } else if (
-      !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-        email,
-      )
-    ) {
-      isFieldValid = false;
-      errorMessage = "Въведеният имейл е в грешен формат!";
-    } else {
-      isFieldValid = true;
-      errorMessage = "";
-    }
-
-    return {
-      isValid: isFieldValid,
-      message: errorMessage,
-    };
-  };
-
   private readonly setPassword = (e: any): void => {
     this.setState({
       password: e.target.value,
     });
   };
 
-  private readonly validatePassword = (
-    password: string,
-  ): {
-    isValid: boolean;
-    message: string;
-  } => {
-    let isFieldValid = this.state.validateFields.password.isValid;
-    let errorMessage = this.state.validateFields.password.message;
-
-    if (password.trim() === "") {
-      isFieldValid = false;
-      errorMessage = "Паролата е задължително поле!";
-    } else if (password.trim().length < 6) {
-      isFieldValid = false;
-      errorMessage = "Паролата трябва да бъде поне 6 символа!";
-    } else {
-      isFieldValid = true;
-      errorMessage = "";
-    }
-
-    return {
-      isValid: isFieldValid,
-      message: errorMessage,
-    };
-
-    // this.setState({
-    //   validateFields: {
-    //     ...this.state.validateFields,
-    //     password: {
-    //       isValid: isFieldValid,
-    //       message: errorMessage,
-    //     },
-    //   },
-    // });
-  };
-
   private readonly login = (event: any): void => {
     event.preventDefault();
     event.stopPropagation();
-    const emailValidation = this.validateEmail(this.state.email);
-    const passwordValidation = this.validatePassword(this.state.password);
+    const emailValidation = validateEmail(this.state.email);
+    const passwordValidation = validatePassword(this.state.password);
 
     if (emailValidation.isValid && passwordValidation.isValid) {
       this.props.login(this.state.email, this.state.password);
@@ -264,7 +175,6 @@ const mapStateToProps = ({ loginState }: ApplicationState): Partial<Props> => ({
   isLoading: selectIsLoading(loginState),
   requestSuccess: selectRequestSuccess(loginState),
   requestMessage: selectRequestMessage(loginState),
-  token: selectToken(loginState),
   user: selectUser(loginState),
   error: selectError(loginState),
 });

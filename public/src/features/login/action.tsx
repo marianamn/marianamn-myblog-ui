@@ -28,50 +28,47 @@ export const login: ActionCreator<LoginAction> = (
 export interface LoginSuccess extends Action<ActionTypes> {
   readonly type: ActionTypes.LOGIN_SUCCESS;
   readonly payload: {
-    readonly requestSuccess: boolean;
-    readonly requestMessage: string;
+    readonly success: boolean;
+    readonly message: string;
     readonly token: string;
     readonly user: User;
   };
 }
 
 export const loginSuccess: ActionCreator<LoginSuccess> = (
-  requestSuccess: boolean,
-  requestMessage: string,
-  token: string,
-  user: User,
+  payload: {
+    readonly success: boolean;
+    readonly message: string;
+    readonly token: string;
+    readonly user: User;
+    readonly errorMessage?: string;
+  },
 ) => {
+  console.log(payload)
   return {
     type: ActionTypes.LOGIN_SUCCESS,
-    payload: {
-      requestSuccess,
-      requestMessage,
-      token,
-      user,
-    },
+    payload,
   };
 };
 
 export interface LoginError extends Action<ActionTypes> {
   readonly type: ActionTypes.LOGIN_ERROR;
   readonly payload: {
-    readonly requestSuccess: boolean;
-    readonly requestMessage: string;
+    readonly success: boolean;
+    readonly message: string;
     readonly errorMessage: string;
   };
 }
 
 export const loginError: ActionCreator<LoginError> = (
-  requestSuccess: boolean,
-  requestMessage: string,
-  errorMessage: string,
+  payload: {
+    readonly success: boolean;
+    readonly message: string;
+    readonly errorMessage: string;
+  },
 ) => {
   return {
     type: ActionTypes.LOGIN_ERROR,
-    payload: {
-      requestSuccess,
-      requestMessage,
-      errorMessage,
-    },
+    payload,
   };
 };

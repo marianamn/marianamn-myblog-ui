@@ -1,4 +1,4 @@
-import RequestInstance from "../utils/index";
+import RequestInstance from "../utils/request";
 import apiEndpoint from "../configs/index";
 
 const request = RequestInstance.request;

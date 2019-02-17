@@ -11,24 +11,25 @@ class Request {
     return response.json();
   };
 
-  checkStatus = (response: any) => {
-    if (response.status >= 200 && response.status < 300) {
-      return response;
-    }
+  // checkStatus = (response: any) => {
+  //   if (response.status >= 200 && response.status < 300) {
+  //     return response;
+  //   }
 
-    const error = new Error(response.statusText);
-    //error.response = response;
+  //   // const error = new Error(response.statusText);
+  //   // console.log(response.body);
+  //   //error.response = response;
 
-    //this.displayErrorToast(response);
+  //   //this.displayErrorToast(response);
 
-    // // handle unathorized
-    // if (response.status === 401 && this.storeInstance) {
+  //   // // handle unathorized
+  //   // if (response.status === 401 && this.storeInstance) {
 
-    //   //this.storeInstance.dispatch(userLoggedOut());
-    // }
+  //   //   //this.storeInstance.dispatch(userLoggedOut());
+  //   // }
 
-    throw error;
-  };
+  //   throw error;
+  // };
 
   request = async (
     url: string,
@@ -50,8 +51,9 @@ class Request {
     // }
 
     return fetch(url, options)
-      .then(this.checkStatus)
-      .then(this.parseJSON);
+      // .then(this.checkStatus)
+      .then(this.parseJSON)
+      .catch(err => err.response);
   };
 }
 

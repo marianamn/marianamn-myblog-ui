@@ -28,14 +28,6 @@ export const selectRequestMessage: Selector<
   state => state.requestMessage,
 );
 
-export const selectToken: Selector<
-  State,
-  string | undefined
-> = createSelector(
-  baseSelector,
-  state => state.token,
-);
-
 export const selectUser: Selector<
   State,
   User | undefined
