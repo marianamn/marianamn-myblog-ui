@@ -50,10 +50,12 @@ class Request {
     //   };
     // }
 
-    return fetch(url, options)
-      // .then(this.checkStatus)
-      .then(this.parseJSON)
-      .catch(err => err.response);
+    return (
+      fetch(url, options)
+        // .then(this.checkStatus)
+        .then(this.parseJSON)
+        .catch(err => err.response)
+    );
   };
 }
 

@@ -30,7 +30,5 @@ export const rootReducer = combineReducers<ApplicationState>({
 
 // tslint:disable-next-line:typedef
 export function* rootSaga() {
-  yield all(
-    [fork(usersSaga), fork(loginSaga)],
-  );
+  yield all([fork(usersSaga), fork(loginSaga)]);
 }

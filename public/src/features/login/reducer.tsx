@@ -4,8 +4,8 @@ import { User } from "../../interfaces";
 
 export interface State {
   readonly isLoading: boolean;
-  readonly requestSuccess: boolean,
-  readonly requestMessage: string,
+  readonly requestSuccess: boolean;
+  readonly requestMessage: string;
   readonly user?: User;
   readonly error?: string;
 }
@@ -34,7 +34,7 @@ export const loginReducer: Reducer<State> = (state = initialState, action) => {
         error: action.payload.errorMessage,
       };
     case ActionTypes.LOGIN_ERROR:
-    console.log(action.payload)
+      console.log(action.payload);
       return {
         ...state,
         isLoading: false,

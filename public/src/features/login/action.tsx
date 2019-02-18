@@ -12,10 +12,7 @@ export interface LoginAction extends Action<ActionTypes> {
   };
 }
 
-export const login: ActionCreator<LoginAction> = (
-  email: string,
-  password: string,
-) => {
+export const login: ActionCreator<LoginAction> = (email: string, password: string) => {
   return {
     type: ActionTypes.LOGIN,
     payload: {
@@ -35,16 +32,14 @@ export interface LoginSuccess extends Action<ActionTypes> {
   };
 }
 
-export const loginSuccess: ActionCreator<LoginSuccess> = (
-  payload: {
-    readonly success: boolean;
-    readonly message: string;
-    readonly token: string;
-    readonly user: User;
-    readonly errorMessage?: string;
-  },
-) => {
-  console.log(payload)
+export const loginSuccess: ActionCreator<LoginSuccess> = (payload: {
+  readonly success: boolean;
+  readonly message: string;
+  readonly token: string;
+  readonly user: User;
+  readonly errorMessage?: string;
+}) => {
+  console.log(payload);
   return {
     type: ActionTypes.LOGIN_SUCCESS,
     payload,
@@ -60,13 +55,11 @@ export interface LoginError extends Action<ActionTypes> {
   };
 }
 
-export const loginError: ActionCreator<LoginError> = (
-  payload: {
-    readonly success: boolean;
-    readonly message: string;
-    readonly errorMessage: string;
-  },
-) => {
+export const loginError: ActionCreator<LoginError> = (payload: {
+  readonly success: boolean;
+  readonly message: string;
+  readonly errorMessage: string;
+}) => {
   return {
     type: ActionTypes.LOGIN_ERROR,
     payload,

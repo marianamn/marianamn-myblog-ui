@@ -22,4 +22,4 @@ export const errorMessages = {
   passwordLengthError: `Паролата трябва да бъде поне ${passwordMinLength} символа!`,
   emailRequired: "Имейлът е задължително поле!",
   emailWrongFormat: "Въведеният имейл е в грешен формат!",
-}
+};

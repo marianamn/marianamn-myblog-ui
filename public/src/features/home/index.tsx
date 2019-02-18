@@ -57,18 +57,11 @@ const mapStateToProps = ({ usersState }: ApplicationState): Partial<Props> => ({
   error: selectError(usersState),
 });
 
-const mapDispatchToProps = (
-  dispatch: Dispatch<Actions>,
-): Partial<Props> => ({
+const mapDispatchToProps = (dispatch: Dispatch<Actions>): Partial<Props> => ({
   getUsers: () => dispatch(getUsers()),
 });
 
-export default connect<
-  Partial<Props>,
-  Partial<Props>,
-  Partial<Props>,
-  ApplicationState
->(
+export default connect<Partial<Props>, Partial<Props>, Partial<Props>, ApplicationState>(
   mapStateToProps,
   mapDispatchToProps,
 )(Home);
