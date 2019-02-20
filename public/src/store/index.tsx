@@ -9,10 +9,15 @@ import loginSaga from "../features/login/saga";
 import { loginReducer } from "../features/login/reducer";
 import { State as LoginState } from "../features/login/reducer";
 
+import registerSaga from "../features/register/saga";
+import { registerReducer } from "../features/register/reducer";
+import { State as RegisterState } from "../features/register/reducer";
+
 // The top-level state object
 export interface ApplicationState {
   readonly usersState: UsersState;
   readonly loginState: LoginState;
+  readonly registerSate: RegisterState;
 }
 
 // Additional props for connected React components. This prop is passed by default with `connect()`
@@ -26,9 +31,10 @@ export interface ConnectedReduxProps<A extends Action = AnyAction> {
 export const rootReducer = combineReducers<ApplicationState>({
   usersState: usersReducer,
   loginState: loginReducer,
+  registerSate: registerReducer,
 });
 
 // tslint:disable-next-line:typedef
 export function* rootSaga() {
-  yield all([fork(usersSaga), fork(loginSaga)]);
+  yield all([fork(usersSaga), fork(loginSaga), fork(registerSaga)]);
 }

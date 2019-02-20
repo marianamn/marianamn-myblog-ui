@@ -21,6 +21,19 @@ export const ListItem = styled<ListProps, "li">("li")`
   margin-right: ${({ isMobile }) => (isMobile ? "0" : "30px")};
   margin-top: ${({ isMobile }) => isMobile && "5px"};
 
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* IE10+ CSS */
+    margin-top: 12px;
+  }
+  @supports (-ms-accelerator:true) {
+    /* IE Edge 12+ CSS */
+    margin-top: 12px;
+  }
+  @supports (-ms-ime-align:auto) {
+      /* IE Edge 16+ CSS */
+      margin-top: 12px;
+  }
+
   &.active {
     border-bottom: 3px solid #cca335;
   }

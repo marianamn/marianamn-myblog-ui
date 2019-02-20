@@ -37,9 +37,7 @@ export const loginSuccess: ActionCreator<LoginSuccess> = (payload: {
   readonly message: string;
   readonly token: string;
   readonly user: User;
-  readonly errorMessage?: string;
 }) => {
-  console.log(payload);
   return {
     type: ActionTypes.LOGIN_SUCCESS,
     payload,

@@ -1,14 +1,14 @@
 import { put, call, takeLatest, all, fork } from "redux-saga/effects";
 import api from "../../services/index";
 import { ActionTypes } from "./constants";
-import { loginSuccess, loginError, LoginAction } from "./action";
+import { loginSuccess, loginError, LoginAction } from "./actions";
 
 // tslint:disable-next-line:typedef
 function* sendLoginRequest(action: LoginAction) {
   const requestURL = "login";
 
   try {
-    const response = yield call(api.post, requestURL, action.payload);
+    const response = yield call(api.postJson, requestURL, action.payload);
     yield put(loginSuccess(response));
   } catch (error) {
     yield put(loginError(error));

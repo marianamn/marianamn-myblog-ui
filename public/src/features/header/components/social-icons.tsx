@@ -56,19 +56,19 @@ export interface Props {
 export const SocialIcons = (props: Props) => {
   return (
     <SocialIconsContainer isMobile={props.isMobile}>
-      <Icon color={props.color} hoverColor={props.color}>
+      <Icon color={props.color} hoverColor={props.hoverColor}>
         <Link href={props.socialMediaLinks.facebook} target="blank">
           <FacebookF className="icon" />
         </Link>
       </Icon>
 
-      <Icon color={props.color} hoverColor={props.color}>
+      <Icon color={props.color} hoverColor={props.hoverColor}>
         <Link href={props.socialMediaLinks.twitter} target="blank">
           <Twitter className="icon" />
         </Link>
       </Icon>
 
-      <Icon color={props.color} hoverColor={props.color}>
+      <Icon color={props.color} hoverColor={props.hoverColor}>
         <Link href={props.socialMediaLinks.instagram} target="blank">
           <Instagram className="icon" />
         </Link>

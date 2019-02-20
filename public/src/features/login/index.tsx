@@ -2,6 +2,7 @@ import * as React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { history } from "../../history";
 import { mobileResolution, tabletResolution } from "../../constants";
 import { User } from "../../interfaces";
 
@@ -13,7 +14,7 @@ import { Button } from "../../common/button";
 import { Error } from "../../common/error";
 
 import { ApplicationState } from "../../store";
-import { LoginAction, login, Actions } from "./action";
+import { LoginAction, login, Actions } from "./actions";
 import {
   selectIsLoading,
   selectRequestSuccess,
@@ -82,8 +83,6 @@ class Login extends React.Component<Props, State> {
     const isTablet =
       this.state.containerWidth > mobileResolution && this.state.containerWidth <= tabletResolution;
 
-    console.log(this.props);
-
     return (
       <FormContainer>
         <Form isMobile={isMobile} isTablet={isTablet} onSubmit={this.login}>
@@ -142,31 +141,22 @@ class Login extends React.Component<Props, State> {
     const passwordValidation = validatePassword(this.state.password);
 
     if (emailValidation.isValid && passwordValidation.isValid) {
+      // If validation passed login user and redirect to home page
       this.props.login(this.state.email, this.state.password);
+      //history.push("/home");
     } else {
-      if (!emailValidation.isValid) {
-        this.setState({
-          validateFields: {
-            ...this.state.validateFields,
-            email: {
-              isValid: emailValidation.isValid,
-              message: emailValidation.message,
-            },
+      this.setState({
+        validateFields: {
+          email: {
+            isValid: emailValidation.isValid,
+            message: emailValidation.message,
           },
-        });
-      }
-
-      if (!passwordValidation.isValid) {
-        this.setState({
-          validateFields: {
-            ...this.state.validateFields,
-            password: {
-              isValid: passwordValidation.isValid,
-              message: passwordValidation.message,
-            },
+          password: {
+            isValid: passwordValidation.isValid,
+            message: passwordValidation.message,
           },
-        });
-      }
+        },
+      });
     }
   };
 }

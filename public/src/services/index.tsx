@@ -3,7 +3,7 @@ import apiEndpoint from "../configs/index";
 
 const request = RequestInstance.request;
 
-const get = async (requestURL: string) => {
+const getJson = async (requestURL: string) => {
   const options = {
     method: "GET",
   };
@@ -11,7 +11,7 @@ const get = async (requestURL: string) => {
   return request(`${apiEndpoint}/${requestURL}`, options);
 };
 
-const post = async (requestURL: string, payload: any) => {
+const postJson = async (requestURL: string, payload: any) => {
   const options = {
     method: "POST",
     body: JSON.stringify(payload),
@@ -23,7 +23,16 @@ const post = async (requestURL: string, payload: any) => {
   return request(`${apiEndpoint}/${requestURL}`, options);
 };
 
-const put = async (requestURL: string, payload: any) => {
+const postFormData = async (requestURL: string, payload: any) => {
+  const options = {
+    method: "POST",
+    body: payload,
+  };
+
+  return request(`${apiEndpoint}/${requestURL}`, options);
+};
+
+const putJson = async (requestURL: string, payload: any) => {
   const options = {
     method: "PUT",
     body: JSON.stringify(payload),
@@ -35,7 +44,7 @@ const put = async (requestURL: string, payload: any) => {
   return request(`${apiEndpoint}/${requestURL}`, options);
 };
 
-const remove = async (requestURL: string, payload: any) => {
+const removeJson = async (requestURL: string, payload: any) => {
   const options = {
     method: "DELETE",
     body: JSON.stringify(payload),
@@ -48,8 +57,9 @@ const remove = async (requestURL: string, payload: any) => {
 };
 
 export default {
-  get,
-  post,
-  put,
-  remove,
+  getJson,
+  postJson,
+  postFormData,
+  putJson,
+  removeJson,
 };

@@ -17,14 +17,14 @@ const initialState = {
   requestMessage: "",
 };
 
-export const loginReducer: Reducer<State> = (state = initialState, action) => {
+export const registerReducer: Reducer<State> = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.LOGIN:
+    case ActionTypes.REGISTER:
       return {
         ...state,
         isLoading: true,
       };
-    case ActionTypes.LOGIN_SUCCESS:
+    case ActionTypes.REGISTER_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -33,7 +33,7 @@ export const loginReducer: Reducer<State> = (state = initialState, action) => {
         requestMessage: action.payload.message,
         error: "",
       };
-    case ActionTypes.LOGIN_ERROR:
+    case ActionTypes.REGISTER_ERROR:
       return {
         ...state,
         isLoading: false,

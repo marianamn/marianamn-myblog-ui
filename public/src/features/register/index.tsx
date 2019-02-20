@@ -1,12 +1,27 @@
 import * as React from "react";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 import styled from "styled-components";
+import { history } from "../../history";
 import { mobileResolution, tabletResolution } from "../../constants";
+import { User } from "../../interfaces";
+
+import { validateEmail, validatePassword, validateName, validatePicture } from "../../utils/validation";
 import { Title } from "../../common/title";
 import { FormGroup } from "../../common/form-group";
 import { Button } from "../../common/button";
 import { Error } from "../../common/error";
-import { Link } from "react-router-dom";
 import { ImageFormGroup } from "../../common/image-form-group";
+
+import { ApplicationState } from "../../store";
+import { RegisterAction, register, Actions } from "./actions";
+import {
+  selectIsLoading,
+  selectRequestSuccess,
+  selectRequestMessage,
+  selectUser,
+  selectError,
+} from "./selectors";
 
 export const FormContainer = styled("div")`
   margin: 50px 0;
@@ -21,6 +36,16 @@ export const Form = styled<FormProps, "form">("form")`
   width: ${({ isMobile, isTablet }) => (isMobile || isTablet ? "80%" : "50%")};
   margin: 0 auto;
 `;
+
+interface Props {
+  readonly isLoading: boolean;
+  readonly requestSuccess: boolean;
+  readonly requestMessage: string;
+  readonly token?: string;
+  readonly user?: User;
+  readonly error?: string;
+  readonly register: (payload: FormData) => RegisterAction;
+}
 
 interface State {
   readonly containerWidth: number;
@@ -41,11 +66,15 @@ interface State {
       readonly isValid: boolean;
       readonly message: string;
     };
+    readonly picture: {
+      readonly isValid: boolean;
+      readonly message: string;
+    };
   };
 }
 
-export default class Register extends React.Component<{}, State> {
-  constructor(props: {}, state: State) {
+class Register extends React.Component<Props, State> {
+  constructor(props: Props, state: State) {
     super(props, state);
     this.state = {
       containerWidth: 0,
@@ -63,6 +92,10 @@ export default class Register extends React.Component<{}, State> {
           message: "",
         },
         password: {
+          isValid: true,
+          message: "",
+        },
+        picture: {
           isValid: true,
           message: "",
         },
@@ -86,10 +119,6 @@ export default class Register extends React.Component<{}, State> {
 
     return (
       <FormContainer>
-        {/* <form id="uploadForm" enctype="multipart/form-data" method="post">
-          <input type="file" name="picture" />
-          <input type="submit" value="Upload File" name="submit">
-        </form> */}
         <Form
           id="uploadForm"
           encType="multipart/form-data"
@@ -100,13 +129,7 @@ export default class Register extends React.Component<{}, State> {
         >
           <Title text="Регистриране" />
 
-          <FormGroup
-            label="Име"
-            name="mane"
-            inputType="text"
-            isRequired
-            setValue={this.validateName}
-          />
+          <FormGroup label="Име" name="mane" inputType="text" isRequired setValue={this.setName} />
           {!this.state.validateFields.name.isValid && (
             <Error text={this.state.validateFields.name.message} />
           )}
@@ -116,7 +139,7 @@ export default class Register extends React.Component<{}, State> {
             name="email"
             inputType="email"
             isRequired
-            setValue={this.validateEmail}
+            setValue={this.setEmail}
           />
           {!this.state.validateFields.email.isValid && (
             <Error text={this.state.validateFields.email.message} />
@@ -127,20 +150,19 @@ export default class Register extends React.Component<{}, State> {
             name="password"
             inputType="password"
             isRequired
-            setValue={this.validatePassword}
+            setValue={this.setPassword}
           />
           {!this.state.validateFields.password.isValid && (
             <Error text={this.state.validateFields.password.message} />
           )}
 
-          <ImageFormGroup validateField={this.validateImage} />
+          <ImageFormGroup validateField={this.setImage} />
+          {!this.state.validateFields.picture.isValid && (
+            <Error text={this.state.validateFields.picture.message} />
+          )}
 
           <Button text="Регистрация" />
         </Form>
-        {/* <form id="uploadForm" enctype="multipart/form-data" method="post">
-          <input type="file" name="picture" />
-          <input type="submit" value="Upload File" name="submit">
-        </form> */}
       </FormContainer>
     );
   }
@@ -149,107 +171,80 @@ export default class Register extends React.Component<{}, State> {
     this.setState({ containerWidth: window.innerWidth });
   };
 
-  private readonly validateName = (e: any): void => {
-    const name = e.target.value;
-    let isFieldValid = this.state.validateFields.name.isValid;
-    let errorMessage = this.state.validateFields.name.message;
-
-    if (name.trim() === "") {
-      isFieldValid = false;
-      errorMessage = "Името е задължително поле!";
-    } else if (name.trim().length < 2 || name.trim().length > 40) {
-      isFieldValid = false;
-      errorMessage = "Името трябва да бъде между 2 и 40 символа!";
-    } else {
-      isFieldValid = true;
-      errorMessage = "";
-    }
-
-    this.setState({
-      validateFields: {
-        ...this.state.validateFields,
-        name: {
-          isValid: isFieldValid,
-          message: errorMessage,
-        },
-      },
-      name: e.target.value,
-    });
+  private readonly setName = (e: any): void => {
+    this.setState({ name: e.target.value });
   };
 
-  private readonly validateEmail = (e: any): void => {
-    const email = e.target.value;
-    let isFieldValid = this.state.validateFields.email.isValid;
-    let errorMessage = this.state.validateFields.email.message;
-
-    if (email.trim() === "") {
-      isFieldValid = false;
-      errorMessage = "Имейлът е задължително поле!";
-    } else if (
-      !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-        email,
-      )
-    ) {
-      isFieldValid = false;
-      errorMessage = "Въведеният имейл е в грешен формат!";
-    } else {
-      isFieldValid = true;
-      errorMessage = "";
-    }
-
-    this.setState({
-      validateFields: {
-        ...this.state.validateFields,
-        email: {
-          isValid: isFieldValid,
-          message: errorMessage,
-        },
-      },
-      email: e.target.value,
-    });
+  private readonly setEmail = (e: any): void => {
+    this.setState({ email: e.target.value });
   };
 
-  private readonly validatePassword = (e: any): void => {
-    const password = e.target.value;
-    let isFieldValid = this.state.validateFields.password.isValid;
-    let errorMessage = this.state.validateFields.password.message;
-
-    if (password.trim() === "") {
-      isFieldValid = false;
-      errorMessage = "Паролата е задължително поле!";
-    } else if (password.trim().length < 6) {
-      isFieldValid = false;
-      errorMessage = "Паролата трябва да бъде поне 6 символа!";
-    } else {
-      isFieldValid = true;
-      errorMessage = "";
-    }
-
-    this.setState({
-      validateFields: {
-        ...this.state.validateFields,
-        password: {
-          isValid: isFieldValid,
-          message: errorMessage,
-        },
-      },
-      password: e.target.value,
-    });
+  private readonly setPassword = (e: any): void => {
+    this.setState({ password: e.target.value });
   };
 
-  private readonly validateImage = (e: any): void => {
+  private readonly setImage = (e: any): void => {
     this.setState({
-      picture: e.target.value,
+      picture: e.target.files[0],
     });
   };
 
   private readonly register = (event: any): void => {
     event.preventDefault();
-    const newState = {
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-      picture: this.state.picture,
-    };
+    event.stopPropagation();
+    const emailValidation = validateEmail(this.state.email);
+    const passwordValidation = validatePassword(this.state.password);
+    const nameValidation = validateName(this.state.name);
+    const pictureValidation = validatePicture(this.state.picture);
+
+    if (emailValidation.isValid && passwordValidation.isValid && nameValidation.isValid && pictureValidation.isValid) {
+      const data = new FormData();
+      data.append("picture", this.state.picture);
+      data.append("name", this.state.name);
+      data.append("email", this.state.email);
+      data.append("password", this.state.password);
+
+      // If validation passed register user and redirect to login page
+      this.props.register(data);
+      //history.push("/login");
+    } else {
+      this.setState({
+        validateFields: {
+          name: {
+            isValid: nameValidation.isValid,
+            message: nameValidation.message,
+          },
+          email: {
+            isValid: passwordValidation.isValid,
+            message: passwordValidation.message,
+          },
+          password: {
+            isValid: emailValidation.isValid,
+            message: emailValidation.message,
+          },
+          picture: {
+            isValid: pictureValidation.isValid,
+            message: pictureValidation.message,
+          },
+        },
+      });
+    }
   };
 }
+
+const mapStateToProps = ({ registerSate }: ApplicationState): Partial<Props> => ({
+  isLoading: selectIsLoading(registerSate),
+  requestSuccess: selectRequestSuccess(registerSate),
+  requestMessage: selectRequestMessage(registerSate),
+  user: selectUser(registerSate),
+  error: selectError(registerSate),
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Actions>): Partial<Props> => ({
+  register: (payload: FormData) => dispatch(register(payload)),
+});
+
+export default connect<Partial<Props>, Partial<Props>, Partial<Props>, ApplicationState>(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Register);

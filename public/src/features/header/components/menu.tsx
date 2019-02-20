@@ -31,6 +31,7 @@ export const LogoContainer = styled("div")`
   .icon {
     position: absolute;
     left: 5px;
+    top: 20px;
     width: 40px;
     height: 40px;
     color: #ffffff;

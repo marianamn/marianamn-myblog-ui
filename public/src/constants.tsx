@@ -17,9 +17,16 @@ export const logoWhite = "assets/images/Logo-white.png";
 
 // Validation
 export const passwordMinLength = 6;
+export const nameMinLength = 2;
+export const nameMaxLength = 40;
+export const maxFileSize = 16777216; // 16megabytes in bytes
 export const errorMessages = {
   passwordRequired: "Паролата е задължително поле!",
   passwordLengthError: `Паролата трябва да бъде поне ${passwordMinLength} символа!`,
   emailRequired: "Имейлът е задължително поле!",
   emailWrongFormat: "Въведеният имейл е в грешен формат!",
+  nameRequired: "Името е задължително поле!",
+  nameLengthError: `Името трябва да бъде между ${nameMinLength} и ${nameMaxLength} символа!`,
+  pictureFormat: "Снимката трябва да бъде в един от следните формати \"jpg\", \"jpeg\" или \"png\"!",
+  pictureLengthError: "Снимката не трябва да надвишава 16MB!",
 };

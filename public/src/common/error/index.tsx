@@ -3,8 +3,9 @@ import styled from "styled-components";
 
 export const ErrorContainer = styled("div")`
   color: #e80c0c;
-  font-size: 0.8em;
+  font-size: 0.75em;
   margin-top: -10px;
+  font-weight: bold;
 `;
 
 export interface Props {

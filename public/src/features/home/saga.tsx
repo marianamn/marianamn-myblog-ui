@@ -8,7 +8,7 @@ function* sendGetUsersRequest() {
   const requestURL = "users";
 
   try {
-    const users = yield call(api.get, requestURL);
+    const users = yield call(api.getJson, requestURL);
     yield put(getUsersSuccess(users.items));
   } catch (error) {
     yield put(getUsersError(error));
