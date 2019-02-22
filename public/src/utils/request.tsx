@@ -1,6 +1,6 @@
+import sessionServices from "../services/sessionServices";
 const ES6Promise = require("es6-promise");
 ES6Promise.polyfill();
-//import storageService from 'services/storage.service';
 
 class Request {
   parseJSON = (response: any) => {
@@ -39,21 +39,20 @@ class Request {
       headers?: any;
     },
   ) => {
-    //const tokenInStorage = storageService.get('session', 'token_id');
+    const tokenInStorage = sessionServices.get("token");
 
     // attach Auth header if applicable
-    // if (tokenInStorage) {
-
-    //   options.headers = {
-    //     ...options.headers,
-    //     Authorization: tokenInStorage,
-    //   };
-    // }
+    if (tokenInStorage) {
+      options.headers = {
+        ...options.headers,
+        Authorization: tokenInStorage,
+      };
+    }
 
     return fetch(url, options)
-      .then(response => response.json())
+      .then(async response => response.json())
       .then(response => {
-        if(!response.success){
+        if (!response.success) {
           throw response;
         }
 

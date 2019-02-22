@@ -1,6 +1,6 @@
 import * as React from "react";
 import { injectGlobal } from "styled-components";
-import Layout from "../layout";
+import Layout from "../features/layout/index";
 
 // tslint:disable-next-line:no-unused-expression
 injectGlobal`

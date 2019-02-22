@@ -3,15 +3,21 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { history } from "../../history";
-import { mobileResolution, tabletResolution } from "../../constants";
+import { mobileResolution, tabletResolution, labels } from "../../constants";
 import { User } from "../../interfaces";
 
-import { validateEmail, validatePassword, validateName, validatePicture } from "../../utils/validation";
+import {
+  validateEmail,
+  validatePassword,
+  validateName,
+  validatePicture,
+} from "../../utils/validation";
 import { Title } from "../../common/title";
 import { FormGroup } from "../../common/form-group";
 import { Button } from "../../common/button";
 import { Error } from "../../common/error";
 import { ImageFormGroup } from "../../common/image-form-group";
+import Loading from "../../common/loading";
 
 import { ApplicationState } from "../../store";
 import { RegisterAction, register, Actions } from "./actions";
@@ -108,6 +114,13 @@ class Register extends React.Component<Props, State> {
     window.addEventListener("resize", this.updateWindowDimensions);
   }
 
+  componentWillReceiveProps(newProps: Props): void {
+    // If registration is successful, redirect to login page
+    if(newProps.requestSuccess !== this.props.requestSuccess && newProps.requestMessage === "User successfully registered!"){
+      history.push("/login");
+    }
+  }
+
   componentWillUnmount(): void {
     window.removeEventListener("resize", this.updateWindowDimensions);
   }
@@ -119,6 +132,7 @@ class Register extends React.Component<Props, State> {
 
     return (
       <FormContainer>
+        {this.props.isLoading && <Loading />}
         <Form
           id="uploadForm"
           encType="multipart/form-data"
@@ -127,15 +141,24 @@ class Register extends React.Component<Props, State> {
           isTablet={isTablet}
           onSubmit={this.register}
         >
-          <Title text="Регистриране" />
+          <Title text={labels.register} />
+          {this.props.error &&
+            <Error text={this.props.error}/>
+          }
 
-          <FormGroup label="Име" name="mane" inputType="text" isRequired setValue={this.setName} />
+          <FormGroup
+            label={labels.name}
+            name="mane"
+            inputType="text"
+            isRequired
+            setValue={this.setName}
+          />
           {!this.state.validateFields.name.isValid && (
             <Error text={this.state.validateFields.name.message} />
           )}
 
           <FormGroup
-            label="Имейл"
+            label={labels.email}
             name="email"
             inputType="email"
             isRequired
@@ -146,7 +169,7 @@ class Register extends React.Component<Props, State> {
           )}
 
           <FormGroup
-            label="Парола"
+            label={labels.password}
             name="password"
             inputType="password"
             isRequired
@@ -156,12 +179,12 @@ class Register extends React.Component<Props, State> {
             <Error text={this.state.validateFields.password.message} />
           )}
 
-          <ImageFormGroup validateField={this.setImage} />
+          <ImageFormGroup validateField={this.setImage} label={labels.picture} />
           {!this.state.validateFields.picture.isValid && (
             <Error text={this.state.validateFields.picture.message} />
           )}
 
-          <Button text="Регистрация" />
+          <Button text={labels.registerBtn} />
         </Form>
       </FormContainer>
     );
@@ -197,16 +220,19 @@ class Register extends React.Component<Props, State> {
     const nameValidation = validateName(this.state.name);
     const pictureValidation = validatePicture(this.state.picture);
 
-    if (emailValidation.isValid && passwordValidation.isValid && nameValidation.isValid && pictureValidation.isValid) {
+    if (
+      emailValidation.isValid &&
+      passwordValidation.isValid &&
+      nameValidation.isValid &&
+      pictureValidation.isValid
+    ) {
       const data = new FormData();
       data.append("picture", this.state.picture);
       data.append("name", this.state.name);
       data.append("email", this.state.email);
       data.append("password", this.state.password);
 
-      // If validation passed register user and redirect to login page
       this.props.register(data);
-      //history.push("/login");
     } else {
       this.setState({
         validateFields: {

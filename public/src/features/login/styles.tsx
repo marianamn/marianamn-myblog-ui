@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const FormContainer = styled("div")`
-  margin: 50px 0;
+  position: relative;
+  padding: 50px 0;
 `;
 
 export interface FormProps {
@@ -15,12 +16,20 @@ export const Form = styled<FormProps, "form">("form")`
 `;
 
 export const RegisterLabel = styled("div")`
-  font-size: 0.9em;
   color: #313131;
+  font-family: Poppins-Regular, serif;
+  text-transform: uppercase;
+  font-size: 0.8em;
   margin-top: 10px;
 
   a {
     text-decoration: none;
     color: #2c2cec;
   }
+`;
+
+export const LoginError = styled("div")`
+  font-family: Poppins-SemiBold;
+  font-size: 0.8em;
+  color: #ff4836;
 `;

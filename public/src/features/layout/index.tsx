@@ -1,8 +1,8 @@
 import * as React from "react";
-import Header from "./features/header/index";
-import Footer from "./features/footer/index";
-import { getMainRoutes } from "./routes";
-import { mobileResolution, tabletResolution } from "./constants";
+import Header from "../header/index";
+import Footer from "../footer/index";
+import { getMainRoutes } from "../../routes";
+import { mobileResolution, tabletResolution } from "../../constants";
 
 interface State {
   readonly containerWidth: number;

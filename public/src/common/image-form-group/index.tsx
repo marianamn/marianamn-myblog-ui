@@ -26,13 +26,14 @@ export const Input = styled("input")`
 `;
 
 export interface Props {
+  readonly label: string;
   readonly validateField: (e: any) => void;
 }
 
 export const ImageFormGroup = (props: Props) => {
   return (
     <FormGroupContainer>
-      <Label htmlFor="picture">Снимка</Label>
+      <Label htmlFor="picture">{props.label}</Label>
       <Input
         type="file"
         name="picture"

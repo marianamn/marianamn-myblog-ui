@@ -1,5 +1,5 @@
 import { put, call, takeLatest, all, fork } from "redux-saga/effects";
-import api from "../../services/index";
+import api from "../../services/apiServices";
 import { ActionTypes } from "./constants";
 import { registerSuccess, registerError, RegisterAction } from "./actions";
 

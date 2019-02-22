@@ -15,6 +15,18 @@ export const socialMediaLinks: SocialMediaLinks = {
 export const logoBlack = "assets/images/Logo-black.png";
 export const logoWhite = "assets/images/Logo-white.png";
 
+// Form
+export const labels = {
+  login: "Вписване",
+  register: "Регистриране",
+  name: "Име",
+  email: "Имейл",
+  password: "Парола",
+  picture: "Снимка",
+  loginBtn: "Вход",
+  registerBtn: "Регистрация",
+}
+
 // Validation
 export const passwordMinLength = 6;
 export const nameMinLength = 2;
@@ -27,6 +39,6 @@ export const errorMessages = {
   emailWrongFormat: "Въведеният имейл е в грешен формат!",
   nameRequired: "Името е задължително поле!",
   nameLengthError: `Името трябва да бъде между ${nameMinLength} и ${nameMaxLength} символа!`,
-  pictureFormat: "Снимката трябва да бъде в един от следните формати \"jpg\", \"jpeg\" или \"png\"!",
+  pictureFormat: 'Снимката трябва да бъде в един от следните формати "jpg", "jpeg" или "png"!',
   pictureLengthError: "Снимката не трябва да надвишава 16MB!",
 };

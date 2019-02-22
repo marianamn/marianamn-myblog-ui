@@ -13,7 +13,7 @@ export interface State {
 const initialState = {
   isLoading: false,
   error: "",
-  requestSuccess: true,
+  requestSuccess: false,
   requestMessage: "",
 };
 

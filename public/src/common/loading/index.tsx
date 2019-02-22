@@ -1,98 +1,72 @@
 import * as React from "react";
 import styled, { keyframes } from "styled-components";
 
-interface Props {
-  readonly height?: string;
-  readonly position?: string;
-}
-
-export const cubeGridScaleDelay = keyframes`
-  0%,
-  70%,
-  100% {
-    transform: scale3D(1, 1, 1);
+export const loadDelay = keyframes`
+  0% {
+    transform: rotate(0deg);
   }
-
-  35% {
-    transform: scale3D(0, 0, 1);
+  100% {
+    transform: rotate(360deg);
   }
 `;
 
-export const LoaderWrapper = styled<Props, "div">("div")`
-  position: ${({ position }) => `${position}`};
+export const LoaderWrapper = styled("div")`
+  position: absolute;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: ${({ height }) => `${height}`};
-  background: #e9eae2;
+  height: 100%;
+  background: #000000;
   z-index: 1;
+  opacity: 0.6;
 `;
 
 export const Loader = styled("div")`
-  width: 50px;
-  height: 50px;
+  font-size: 7px;
+  margin: 50px auto;
+  text-indent: -9999em;
+  width: 11em;
+  height: 11em;
+  border-radius: 50%;
+  background: #808080;
+  background: linear-gradient(to right, #808080 10%, rgba(128,128,128, 0) 42%);
+  position: relative;
+  animation: ${loadDelay} 1.4s infinite linear;
+  transform: translateZ(0);
 
-  .square-1 {
-    animation-delay: 0.2s;
+  &:before {
+    content: '';
+    width: 50%;
+    height: 50%;
+    background: #808080;
+    border-radius: 100% 0 0 0;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
-  .square-2 {
-    animation-delay: 0.3s;
-  }
-
-  .square-3 {
-    animation-delay: 0.4s;
-  }
-
-  .square-4 {
-    animation-delay: 0.1s;
-  }
-
-  .square-5 {
-    animation-delay: 0.2s;
-  }
-
-  .square-6 {
-    animation-delay: 0.3s;
-  }
-
-  .square-7 {
-    animation-delay: 0s;
-  }
-
-  .square-8 {
-    animation-delay: 0.1s;
-  }
-
-  .square-9 {
-    animation-delay: 0.2s;
+  &:after {
+    content: '';
+    background: #000000;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
   }
 `;
 
-export const Square = styled("div")`
-  width: 33%;
-  height: 33%;
-  background-color: #7acec3;
-  float: left;
-  animation: ${cubeGridScaleDelay} 1.3s infinite ease-in-out;
-`;
-
-export default class Loading extends React.Component<Props> {
+export default class Loading extends React.Component<{}> {
   render(): JSX.Element {
     return (
-      <LoaderWrapper height={this.props.height} position={this.props.position}>
-        <Loader>
-          <Square className="square-1" />
-          <Square className="square-2" />
-          <Square className="square-3" />
-          <Square className="square-4" />
-          <Square className="square-5" />
-          <Square className="square-6" />
-          <Square className="square-7" />
-          <Square className="square-8" />
-          <Square className="square-9" />
-        </Loader>
+      <LoaderWrapper>
+        <Loader />
       </LoaderWrapper>
     );
   }

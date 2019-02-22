@@ -2,9 +2,10 @@ import * as React from "react";
 import styled from "styled-components";
 
 export const ErrorContainer = styled("div")`
-  color: #e80c0c;
-  font-size: 0.75em;
   margin-top: -10px;
+  font-family: Poppins-Regular, serif;
+  font-size: 0.8em;
+  color: #ff4836;
   font-weight: bold;
 `;
 

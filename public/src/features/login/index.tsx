@@ -3,15 +3,16 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { history } from "../../history";
-import { mobileResolution, tabletResolution } from "../../constants";
+import { mobileResolution, tabletResolution, labels } from "../../constants";
 import { User } from "../../interfaces";
 
-import { FormContainer, Form, RegisterLabel } from "./styles";
+import { FormContainer, Form, RegisterLabel, LoginError } from "./styles";
 import { validateEmail, validatePassword } from "../../utils/validation";
 import { Title } from "../../common/title";
 import { FormGroup } from "../../common/form-group";
 import { Button } from "../../common/button";
 import { Error } from "../../common/error";
+import Loading from "../../common/loading";
 
 import { ApplicationState } from "../../store";
 import { LoginAction, login, Actions } from "./actions";
@@ -74,6 +75,13 @@ class Login extends React.Component<Props, State> {
     window.addEventListener("resize", this.updateWindowDimensions);
   }
 
+  componentWillReceiveProps(newProps: Props): void {
+    // If login is successful, redirect to home page
+    if(newProps.requestSuccess !== this.props.requestSuccess && newProps.requestMessage === "User successfully logged in!"){
+      history.push("/");
+    }
+  }
+
   componentWillUnmount(): void {
     window.removeEventListener("resize", this.updateWindowDimensions);
   }
@@ -85,10 +93,16 @@ class Login extends React.Component<Props, State> {
 
     return (
       <FormContainer>
+        {this.props.isLoading && <Loading />}
+
         <Form isMobile={isMobile} isTablet={isTablet} onSubmit={this.login}>
-          <Title text="Вписване" />
+          <Title text={labels.login} />
+          {this.props.error &&
+            <Error text={this.props.error}/>
+          }
+
           <FormGroup
-            label="Имейл"
+            label={labels.email}
             name="email"
             inputType="email"
             isRequired
@@ -99,7 +113,7 @@ class Login extends React.Component<Props, State> {
           )}
 
           <FormGroup
-            label="Парола"
+            label={labels.password}
             name="password"
             inputType="password"
             isRequired
@@ -108,7 +122,7 @@ class Login extends React.Component<Props, State> {
           {!this.state.validateFields.password.isValid && (
             <Error text={this.state.validateFields.password.message} />
           )}
-          <Button text="Вход" />
+          <Button text={labels.loginBtn} />
 
           <RegisterLabel>
             Нямаш регистрация? Регистрирай се <Link to="/register">тук</Link>.
@@ -123,27 +137,21 @@ class Login extends React.Component<Props, State> {
   };
 
   private readonly setEmail = (e: any): void => {
-    this.setState({
-      email: e.target.value,
-    });
+    this.setState({ email: e.target.value });
   };
 
   private readonly setPassword = (e: any): void => {
-    this.setState({
-      password: e.target.value,
-    });
+    this.setState({ password: e.target.value });
   };
 
-  private readonly login = (event: any): void => {
+  private readonly login = (event: any) => {
     event.preventDefault();
     event.stopPropagation();
     const emailValidation = validateEmail(this.state.email);
     const passwordValidation = validatePassword(this.state.password);
 
     if (emailValidation.isValid && passwordValidation.isValid) {
-      // If validation passed login user and redirect to home page
       this.props.login(this.state.email, this.state.password);
-      //history.push("/home");
     } else {
       this.setState({
         validateFields: {
@@ -161,13 +169,16 @@ class Login extends React.Component<Props, State> {
   };
 }
 
-const mapStateToProps = ({ loginState }: ApplicationState): Partial<Props> => ({
-  isLoading: selectIsLoading(loginState),
-  requestSuccess: selectRequestSuccess(loginState),
-  requestMessage: selectRequestMessage(loginState),
-  user: selectUser(loginState),
-  error: selectError(loginState),
-});
+const mapStateToProps = ({ loginState }: ApplicationState): Partial<Props> => {
+  // tslint:disable-next-line:no-object-literal-type-assertion
+  return {
+    isLoading: selectIsLoading(loginState),
+    requestSuccess: selectRequestSuccess(loginState),
+    requestMessage: selectRequestMessage(loginState),
+    user: selectUser(loginState),
+    error: selectError(loginState),
+  } as Partial<Props>
+};
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>): Partial<Props> => ({
   login: (email: string, password: string) => dispatch(login(email, password)),
