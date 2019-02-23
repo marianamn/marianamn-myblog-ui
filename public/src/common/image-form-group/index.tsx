@@ -18,7 +18,6 @@ export const Label = styled("label")`
 export const Input = styled("input")`
   width: calc(100% - 80px);
   height: 90%;
-  padding-left: 5px;
 
   &:focus {
     outline: none;

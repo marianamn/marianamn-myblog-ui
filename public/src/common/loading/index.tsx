@@ -26,7 +26,7 @@ export const LoaderWrapper = styled("div")`
 
 export const Loader = styled("div")`
   font-size: 7px;
-  margin: 50px auto;
+  margin: 0;
   text-indent: -9999em;
   width: 11em;
   height: 11em;
