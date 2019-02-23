@@ -5,6 +5,7 @@ export const loadDelay = keyframes`
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -31,13 +32,13 @@ export const Loader = styled("div")`
   height: 11em;
   border-radius: 50%;
   background: #808080;
-  background: linear-gradient(to right, #808080 10%, rgba(128,128,128, 0) 42%);
+  background: linear-gradient(to right, #808080 10%, rgba(128, 128, 128, 0) 42%);
   position: relative;
   animation: ${loadDelay} 1.4s infinite linear;
   transform: translateZ(0);
 
-  &:before {
-    content: '';
+  &::before {
+    content: "";
     width: 50%;
     height: 50%;
     background: #808080;
@@ -47,8 +48,8 @@ export const Loader = styled("div")`
     left: 0;
   }
 
-  &:after {
-    content: '';
+  &::after {
+    content: "";
     background: #000000;
     width: 80%;
     height: 80%;

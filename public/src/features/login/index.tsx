@@ -77,7 +77,10 @@ class Login extends React.Component<Props, State> {
 
   componentWillReceiveProps(newProps: Props): void {
     // If login is successful, redirect to home page
-    if(newProps.requestSuccess !== this.props.requestSuccess && newProps.requestMessage === "User successfully logged in!"){
+    if (
+      newProps.requestSuccess !== this.props.requestSuccess &&
+      newProps.requestMessage === "User successfully logged in!"
+    ) {
       history.push("/");
     }
   }
@@ -97,9 +100,7 @@ class Login extends React.Component<Props, State> {
 
         <Form isMobile={isMobile} isTablet={isTablet} onSubmit={this.login}>
           <Title text={labels.login} />
-          {this.props.error &&
-            <Error text={this.props.error}/>
-          }
+          {this.props.error && <Error text={this.props.error} />}
 
           <FormGroup
             label={labels.email}
@@ -177,7 +178,7 @@ const mapStateToProps = ({ loginState }: ApplicationState): Partial<Props> => {
     requestMessage: selectRequestMessage(loginState),
     user: selectUser(loginState),
     error: selectError(loginState),
-  } as Partial<Props>
+  } as Partial<Props>;
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>): Partial<Props> => ({

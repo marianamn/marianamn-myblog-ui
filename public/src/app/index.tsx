@@ -6,7 +6,7 @@ import Layout from "../features/layout/index";
 injectGlobal`
   @font-face {
     font-family: PlayfairDisplay-BoldItalic;
-    src: url("assets/fonts/PlayfairDisplay-BoldItalic.otf") format("opentype");
+    src: url("assets/fonts/PlayfairDisplay-BoldItalic.ttf") format("opentype");
   }
 
   @font-face {
@@ -16,17 +16,17 @@ injectGlobal`
 
   @font-face {
     font-family: Poppins-Medium;
-    src: url("assets/fonts/Poppins-Medium.otf") format("opentype");
+    src: url("assets/fonts/Poppins-Medium.ttf") format("opentype");
   }
 
   @font-face {
     font-family: Poppins-Regular;
-    src: url("assets/fonts/Poppins-Regular.otf") format("opentype");
+    src: url("assets/fonts/Poppins-Regular.ttf") format("opentype");
   }
 
   @font-face {
     font-family: Poppins-SemiBold;
-    src: url("assets/fonts/Poppins-SemiBold.otf") format("opentype");
+    src: url("assets/fonts/Poppins-SemiBold.ttf") format("opentype");
   }
 
   body {

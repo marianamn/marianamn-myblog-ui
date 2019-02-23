@@ -25,7 +25,7 @@ export const labels = {
   picture: "Снимка",
   loginBtn: "Вход",
   registerBtn: "Регистрация",
-}
+};
 
 // Validation
 export const passwordMinLength = 6;

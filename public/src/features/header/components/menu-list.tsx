@@ -84,7 +84,7 @@ export const ExitIcon = styled<ListProps, "span">("span")`
     color: black;
     text-align: center;
     border-radius: 6px;
-    padding: 0px 0;
+    padding: 0;
     position: absolute;
     top: -10px;
     left: -55px;
@@ -106,7 +106,6 @@ export interface Props extends RouteComponentProps<any> {
 }
 
 class MenuList extends React.Component<Props, {}> {
-
   render(): JSX.Element {
     const sessionStorageData = getGlobalStateFromStorage();
 
@@ -148,7 +147,7 @@ class MenuList extends React.Component<Props, {}> {
           <Link to="/contacts">Контакти</Link>
         </ListItem>
 
-        {(sessionStorageData.user && sessionStorageData.user.role === "admin") &&
+        {sessionStorageData.user && sessionStorageData.user.role === "admin" && (
           <ListItem
             className={this.props.location.pathname === "/admin" && "active"}
             isMobile={this.props.isMobile}
@@ -157,7 +156,7 @@ class MenuList extends React.Component<Props, {}> {
           >
             <Link to="/admin">Админ</Link>
           </ListItem>
-        }
+        )}
 
         {!sessionStorageData.token ? (
           <ListItem
@@ -173,19 +172,17 @@ class MenuList extends React.Component<Props, {}> {
             <Link to="/login">Вход</Link>
           </ListItem>
         ) : (
-          <ListItem
-            isMobile={this.props.isMobile}
-          >
+          <ListItem isMobile={this.props.isMobile}>
             <User>{sessionStorageData.user.name}</User>
           </ListItem>
         )}
 
-        {sessionStorageData.token &&
+        {sessionStorageData.token && (
           <ExitIcon onClick={this.logout} isMobile={this.props.isMobile}>
             <LogOut className="exit" />
             <span className="tooltip-text">Изход</span>
           </ExitIcon>
-        }
+        )}
       </List>
     );
   }

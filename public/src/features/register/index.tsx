@@ -116,7 +116,10 @@ class Register extends React.Component<Props, State> {
 
   componentWillReceiveProps(newProps: Props): void {
     // If registration is successful, redirect to login page
-    if(newProps.requestSuccess !== this.props.requestSuccess && newProps.requestMessage === "User successfully registered!"){
+    if (
+      newProps.requestSuccess !== this.props.requestSuccess &&
+      newProps.requestMessage === "User successfully registered!"
+    ) {
       history.push("/login");
     }
   }
@@ -142,9 +145,7 @@ class Register extends React.Component<Props, State> {
           onSubmit={this.register}
         >
           <Title text={labels.register} />
-          {this.props.error &&
-            <Error text={this.props.error}/>
-          }
+          {this.props.error && <Error text={this.props.error} />}
 
           <FormGroup
             label={labels.name}

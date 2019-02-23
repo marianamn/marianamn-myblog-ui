@@ -15,10 +15,10 @@ export const getMainRoutes = () => {
         <Route exact path="/" component={Home} />
         <Route exact path="/posts" component={Posts} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register}/>
+        <Route exact path="/register" component={Register} />
 
         {/* Admin panel routes */}
-        <Route exact path="/admin" component={AdminOnlyState(AdminHome)}/>
+        <Route exact path="/admin" component={AdminOnlyState(AdminHome)} />
       </Switch>
     </Router>
   );
