@@ -30,16 +30,6 @@ export const ListItem = styled<ListProps, "li">("li")`
     margin-top: 12px;
   }
 
-  @supports (-ms-accelerator: true) {
-    /* IE Edge 12+ CSS */
-    margin-top: 12px;
-  }
-
-  @supports (-ms-ime-align: auto) {
-    /* IE Edge 16+ CSS */
-    margin-top: 12px;
-  }
-
   &.active {
     border-bottom: 3px solid #cca335;
   }
@@ -68,6 +58,11 @@ export const ExitIcon = styled<ListProps, "span">("span")`
   right: 15px;
   bottom: ${({ isMobile }) => isMobile && "15px"};
 
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* IE10+ CSS */
+    top: -50px;
+  }
+
   .exit {
     width: 22px;
     color: #cca335;
@@ -91,6 +86,11 @@ export const ExitIcon = styled<ListProps, "span">("span")`
     z-index: 1;
     opacity: 0.7;
     font-size: 0.9em;
+
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      /* IE10+ CSS */
+      top: 50px;
+    }
   }
 
   &:hover {

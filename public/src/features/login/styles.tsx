@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const FormContainer = styled("div")`
-  position: relative;
   padding: 50px 0;
 `;
 

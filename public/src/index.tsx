@@ -6,6 +6,9 @@ import { history } from "./history";
 import configureStore from "./configureStore";
 import App from "./app/index";
 
+import "babel-polyfill";
+import "isomorphic-fetch";
+
 const initialState = window.initialReduxState;
 const store = configureStore(history, initialState);
 const root = document.querySelector("#container");
