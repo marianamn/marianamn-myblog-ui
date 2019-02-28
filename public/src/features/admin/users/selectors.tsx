@@ -1,6 +1,6 @@
 import { createSelector, Selector } from "reselect";
 import { State } from "./reducer";
-import { Post } from "../../interfaces";
+import { User } from "../../../interfaces";
 
 export const baseSelector: Selector<State, State> = ({ ...props }) => props;
 
@@ -9,9 +9,9 @@ export const selectIsLoading: Selector<State, boolean> = createSelector(
   state => state.isLoading,
 );
 
-export const selectRecentPosts: Selector<State, ReadonlyArray<Post>> = createSelector(
+export const selectUsers: Selector<State, ReadonlyArray<User>> = createSelector(
   baseSelector,
-  state => state.recentPosts,
+  state => state.users,
 );
 
 export const selectError: Selector<State, string | undefined> = createSelector(

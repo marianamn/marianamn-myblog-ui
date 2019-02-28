@@ -1,10 +1,10 @@
 import { Reducer } from "redux";
 import { ActionTypes } from "./constants";
-import { Post } from "../../interfaces";
+import { User } from "../../../interfaces";
 
 export interface State {
   readonly isLoading: boolean;
-  readonly recentPosts?: ReadonlyArray<Post>;
+  readonly users?: ReadonlyArray<User>;
   readonly error?: string;
 }
 
@@ -13,20 +13,20 @@ const initialState = {
   error: "",
 };
 
-export const recentPostsReducer: Reducer<State> = (state = initialState, action) => {
+export const usersReducer: Reducer<State> = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.GET_RECENT_POSTS:
+    case ActionTypes.GET_USERS:
       return {
         ...state,
         isLoading: true,
       };
-    case ActionTypes.GET_RECENT_POSTS_SUCCESS:
+    case ActionTypes.GET_USERS_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        recentPosts: action.payload.recentPosts,
+        users: action.payload.users,
       };
-    case ActionTypes.GET_RECENT_POSTS_ERROR:
+    case ActionTypes.GET_USERS_ERROR:
       return {
         ...state,
         isLoading: false,

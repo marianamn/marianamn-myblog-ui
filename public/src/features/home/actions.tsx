@@ -1,44 +1,46 @@
 import { Action, ActionCreator } from "redux";
 import { ActionTypes } from "./constants";
-import { User } from "../../interfaces";
+import { Post } from "../../interfaces";
 
-export type Actions = GetUsers | GetUsersSuccess | GetUsersError;
+export type Actions = GetRecentPosts | GetRecentPostsSuccess | GetRecentPostsError;
 
-export interface GetUsers extends Action<ActionTypes> {
-  readonly type: ActionTypes.GET_USERS;
+export interface GetRecentPosts extends Action<ActionTypes> {
+  readonly type: ActionTypes.GET_RECENT_POSTS;
 }
 
-export const getUsers: ActionCreator<GetUsers> = () => {
+export const getRecentPosts: ActionCreator<GetRecentPosts> = () => {
   return {
-    type: ActionTypes.GET_USERS,
+    type: ActionTypes.GET_RECENT_POSTS,
   };
 };
 
-export interface GetUsersSuccess extends Action<ActionTypes> {
-  readonly type: ActionTypes.GET_USERS_SUCCESS;
+export interface GetRecentPostsSuccess extends Action<ActionTypes> {
+  readonly type: ActionTypes.GET_RECENT_POSTS_SUCCESS;
   readonly payload: {
-    readonly users: ReadonlyArray<User>;
+    readonly recentPosts: ReadonlyArray<Post>;
   };
 }
 
-export const getUsersSuccess: ActionCreator<GetUsersSuccess> = (users: ReadonlyArray<User>) => {
+export const getRecentPostsSuccess: ActionCreator<GetRecentPostsSuccess> = (
+  recentPosts: ReadonlyArray<Post>,
+) => {
   return {
-    type: ActionTypes.GET_USERS_SUCCESS,
+    type: ActionTypes.GET_RECENT_POSTS_SUCCESS,
     payload: {
-      users,
+      recentPosts,
     },
   };
 };
 
-export interface GetUsersError extends Action<ActionTypes> {
-  readonly type: ActionTypes.GET_USERS_ERROR;
+export interface GetRecentPostsError extends Action<ActionTypes> {
+  readonly type: ActionTypes.GET_RECENT_POSTS_ERROR;
   readonly payload: Error;
   readonly error?: boolean;
 }
 
-export const getUsersError: ActionCreator<GetUsersError> = (error: string) => {
+export const getRecentPostsError: ActionCreator<GetRecentPostsError> = (error: string) => {
   return {
-    type: ActionTypes.GET_USERS_ERROR,
+    type: ActionTypes.GET_RECENT_POSTS_ERROR,
     payload: new Error(error),
     error: true,
   };

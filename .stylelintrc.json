@@ -92,7 +92,6 @@
         "selector-list-comma-space-before": "never",
         "selector-pseudo-element-colon-notation": "double",
         "string-quotes": "double",
-        "value-list-comma-newline-after": "always-multi-line",
         "value-list-comma-space-after": "always-single-line",
         "value-list-comma-space-before": "never"
     }

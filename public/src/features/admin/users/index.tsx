@@ -1,28 +1,25 @@
 import * as React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { mobileResolution, tabletResolution } from "../../constants";
-import { Post } from "../../interfaces";
+import { mobileResolution, tabletResolution } from "../../../constants";
+import { User } from "../../../interfaces";
 
-import Carousel from "./components/carousel/carousel";
-
-import { selectIsLoading, selectRecentPosts, selectError } from "./selectors";
-import { Actions, getRecentPosts, GetRecentPosts } from "./actions";
-import { ApplicationState } from "../../store";
-import Loading from "../../common/loading";
+import { selectIsLoading, selectUsers, selectError } from "./selectors";
+import { Actions, getUsers, GetUsers } from "./actions";
+import { ApplicationState } from "../../../store";
 
 interface Props {
   readonly isLoading: boolean;
-  readonly recentPosts: ReadonlyArray<Post>;
+  readonly users: ReadonlyArray<User>;
   readonly error: string;
-  readonly getRecentPosts: () => GetRecentPosts;
+  readonly getUsers: () => GetUsers;
 }
 
 interface State {
   readonly containerWidth: number;
 }
 
-class Home extends React.Component<Props, State> {
+class Users extends React.Component<Props, State> {
   constructor(props: Props, state: State) {
     super(props, state);
     this.state = {
@@ -34,7 +31,7 @@ class Home extends React.Component<Props, State> {
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
 
-    this.props.getRecentPosts();
+    this.props.getUsers();
   }
 
   componentWillUnmount(): void {
@@ -46,13 +43,7 @@ class Home extends React.Component<Props, State> {
     const isTablet =
       this.state.containerWidth > mobileResolution && this.state.containerWidth <= tabletResolution;
 
-      console.log(this.props)
-
-    if(this.props.isLoading && this.props.recentPosts){
-      return <Loading />;
-    } else {
-      return <Carousel recentPosts={this.props.recentPosts} />;
-    }
+    return <div>Hello!</div>;
   }
 
   private readonly updateWindowDimensions = (): void => {
@@ -60,17 +51,17 @@ class Home extends React.Component<Props, State> {
   };
 }
 
-const mapStateToProps = ({ recentPostsState }: ApplicationState): Partial<Props> => ({
-  isLoading: selectIsLoading(recentPostsState),
-  recentPosts: selectRecentPosts(recentPostsState),
-  error: selectError(recentPostsState),
+const mapStateToProps = ({ usersState }: ApplicationState): Partial<Props> => ({
+  isLoading: selectIsLoading(usersState),
+  users: selectUsers(usersState),
+  error: selectError(usersState),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>): Partial<Props> => ({
-  getRecentPosts: () => dispatch(getRecentPosts()),
+  getUsers: () => dispatch(getUsers()),
 });
 
 export default connect<Partial<Props>, Partial<Props>, Partial<Props>, ApplicationState>(
   mapStateToProps,
   mapDispatchToProps,
-)(Home);
+)(Users);

@@ -52,7 +52,7 @@ class Request {
     return fetch(url, options)
       .then(async response => response.json())
       .then(response => {
-        if (!response.success) {
+        if (response.success && response.success === false) {
           throw response;
         }
 
