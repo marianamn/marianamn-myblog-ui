@@ -257,7 +257,7 @@ export const SlickWrapper = styled.div`
 
   .slick-dots li button::before {
     font-family: slick;
-    font-size: 6px;
+    font-size: 20px;
     line-height: 20px;
 
     position: absolute;
@@ -265,16 +265,13 @@ export const SlickWrapper = styled.div`
     left: 0;
 
     width: 20px;
-    height: 20px;
+    height: 2px;
 
-    content: "•";
+    content: "";
     text-align: center;
 
     opacity: 0.25;
-    color: black;
-
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    background: black;
   }
 
   .slick-dots li.slick-active button::before {

@@ -46,9 +46,7 @@ class Home extends React.Component<Props, State> {
     const isTablet =
       this.state.containerWidth > mobileResolution && this.state.containerWidth <= tabletResolution;
 
-      console.log(this.props)
-
-    if(this.props.isLoading && this.props.recentPosts){
+    if (this.props.isLoading && this.props.recentPosts) {
       return <Loading />;
     } else {
       return <Carousel recentPosts={this.props.recentPosts} />;
