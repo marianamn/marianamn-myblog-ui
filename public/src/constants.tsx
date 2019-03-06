@@ -42,3 +42,32 @@ export const errorMessages = {
   pictureFormat: 'Снимката трябва да бъде в един от следните формати "jpg", "jpeg" или "png"!',
   pictureLengthError: "Снимката не трябва да надвишава 16MB!",
 };
+
+// homepage
+export const homePageGreeting = {
+  //title: "Здравейте и добре дошли в моя блог",
+  title: "Hello - Welcome to Myself WordPress Blog Theme",
+  content:
+    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod ut laoreet dolore magna aliquam erat volutpat",
+  labels: {
+    readMore: "Прочети повече",
+    comments: "Коментара",
+  },
+};
+
+export const textCharsToShow = 300;
+
+export const homeLabels = {
+  readMore: "Прочети повече",
+  comments: "Коментара",
+  by: "От",
+};
+
+// footer
+export const footerLabels = {
+  allRightsReserved: "Всички права запазени.",
+  subscribeBtn: "Абониране",
+  subscribeTitle: "Абониране",
+  subscribeText: "Искаш да разбереш първи за нова публикация? Aбонирай се тук",
+  emailText: "Имейл адрес",
+};

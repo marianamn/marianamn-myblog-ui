@@ -4,6 +4,7 @@ import { history } from "./history";
 import { AdminOnlyState } from "./services/authServices";
 import Home from "./features/home";
 import Posts from "./features/posts";
+import Post from "./features/post";
 import Register from "./features/register";
 import Login from "./features/login";
 import AdminHome from "./features/admin/home";
@@ -14,6 +15,7 @@ export const getMainRoutes = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/posts" component={Posts} />
+        <Route exact path="/posts/:id" component={Post} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
 

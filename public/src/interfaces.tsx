@@ -28,6 +28,7 @@ export interface Post {
   readonly category: string;
   readonly tags: ReadonlyArray<string>;
   readonly author: User;
+  readonly comments: ReadonlyArray<Comment>;
   readonly likes: number;
   readonly dislikes: number;
   readonly picture: string;

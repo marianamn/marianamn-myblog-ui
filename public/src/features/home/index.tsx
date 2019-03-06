@@ -4,12 +4,14 @@ import { connect } from "react-redux";
 import { mobileResolution, tabletResolution } from "../../constants";
 import { Post } from "../../interfaces";
 
-import Carousel from "./components/carousel/carousel";
-
 import { selectIsLoading, selectRecentPosts, selectError } from "./selectors";
 import { Actions, getRecentPosts, GetRecentPosts } from "./actions";
 import { ApplicationState } from "../../store";
+
 import Loading from "../../common/loading";
+import Carousel from "./components/carousel/carousel";
+import GreetingSection from "./components/greeting-section/index";
+import PostsLists from "./components/posts-list/index";
 
 interface Props {
   readonly isLoading: boolean;
@@ -20,6 +22,8 @@ interface Props {
 
 interface State {
   readonly containerWidth: number;
+  readonly imagesLoaded: boolean;
+  readonly imagesLoadedCount: number;
 }
 
 class Home extends React.Component<Props, State> {
@@ -27,6 +31,8 @@ class Home extends React.Component<Props, State> {
     super(props, state);
     this.state = {
       containerWidth: 0,
+      imagesLoaded: false,
+      imagesLoadedCount: 0,
     };
   }
 
@@ -46,12 +52,33 @@ class Home extends React.Component<Props, State> {
     const isTablet =
       this.state.containerWidth > mobileResolution && this.state.containerWidth <= tabletResolution;
 
-    if (this.props.isLoading && this.props.recentPosts) {
-      return <Loading />;
-    } else {
-      return <Carousel recentPosts={this.props.recentPosts} />;
-    }
+    return (
+      <div>
+        {this.props.isLoading || (!this.state.imagesLoaded && <Loading />)}
+        <Carousel
+          recentPosts={this.props.recentPosts}
+          isTablet={isTablet}
+          handleImagesLoaded={this.handleImagesLoaded}
+        />
+        <GreetingSection />
+        {this.props.recentPosts && (
+          <PostsLists
+            recentPosts={this.props.recentPosts}
+            isMobile={isMobile}
+            isTablet={isTablet}
+          />
+        )}
+      </div>
+    );
   }
+
+  private readonly handleImagesLoaded = () => {
+    this.setState({ imagesLoadedCount: this.state.imagesLoadedCount + 1 }, () => {
+      if (this.props.recentPosts.length === this.state.imagesLoadedCount) {
+        this.setState({ imagesLoaded: true });
+      }
+    });
+  };
 
   private readonly updateWindowDimensions = (): void => {
     this.setState({ containerWidth: window.innerWidth });

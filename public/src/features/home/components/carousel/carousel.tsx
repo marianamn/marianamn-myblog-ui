@@ -8,6 +8,7 @@ import { SlickWrapper } from "./carousel-styles";
 
 export const ImgContainer = styled("div")`
   position: relative;
+  width: 33%;
 `;
 
 export const HoverContainer = styled("div")`
@@ -53,11 +54,20 @@ export const Category = styled("div")`
   text-align: center;
 `;
 
-export const PostTitle = styled("div")`
+export interface PostTitleProps {
+  readonly isTablet: boolean;
+}
+
+export const PostTitle = styled<PostTitleProps, "div">("div")`
   font-family: PlayfairDisplay-BoldItalic, serif;
   font-size: 28px;
   text-align: center;
-  margin-bottom: 25px;
+  margin: 0 5px 25px 5px;
+  max-height: 88px;
+  overflow: hidden;
+  text-overflow: ${({ isTablet }) => isTablet && "ellipsis"};
+  white-space: ${({ isTablet }) => isTablet && "nowrap"};
+  width: ${({ isTablet }) => isTablet && "95%"};
 `;
 
 export const LikesContainer = styled("div")`
@@ -79,17 +89,21 @@ export const LikesContainer = styled("div")`
 
 export interface Props {
   readonly recentPosts: ReadonlyArray<Post>;
+  readonly isTablet: boolean;
+  readonly handleImagesLoaded: () => void;
 }
 
-//image resolutions 4288 × 2848
+// c_scale,h_1424,w_2144
+// image resolutions 4288 × 2848
 export default class Carousel extends React.Component<Props, {}> {
   render(): JSX.Element {
     const settings = {
       infinite: true,
       dots: true,
       arrows: false,
-      speed: 2000,
-      autoplaySpeed: 2000,
+      autoplay: false,
+      speed: 1500,
+      autoplaySpeed: 5000,
       cssEase: "linear",
       slidesToShow: 3,
       slidesToScroll: 1,
@@ -113,35 +127,32 @@ export default class Carousel extends React.Component<Props, {}> {
       ],
     };
 
-    // {...settings}
-
     return (
-      <div>
-        <SlickWrapper>
-          <Slider {...settings}>
-            {this.props.recentPosts &&
-              this.props.recentPosts.map(p => {
-                return (
-                  <ImgContainer key={p.picture}>
-                    <img src={p.picture} />
+      <SlickWrapper>
+        <Slider {...settings}>
+          {this.props.recentPosts &&
+            this.props.recentPosts.map(p => {
+              return (
+                <ImgContainer key={p.picture}>
+                  {/* tslint:disable-next-line:jsx-no-lambda */}
+                  <img src={p.picture} onLoad={() => this.props.handleImagesLoaded()} />
 
-                    <HoverContainer>
-                      <Category className="category">{p.category}</Category>
-                      <PostTitle>{p.title}</PostTitle>
-                      <LikesContainer>
-                        <span className="number">{p.likes}</span>
-                        <ThumbUp className="icon like" />
-                        <span className="separator" />
-                        <span className="number">{p.dislikes}</span>
-                        <ThumbDown className="icon dislike" />
-                      </LikesContainer>
-                    </HoverContainer>
-                  </ImgContainer>
-                );
-              })}
-          </Slider>
-        </SlickWrapper>
-      </div>
+                  <HoverContainer>
+                    <Category className="category">{p.category}</Category>
+                    <PostTitle isTablet={this.props.isTablet}>{p.title}</PostTitle>
+                    <LikesContainer>
+                      <span className="number">{p.likes}</span>
+                      <ThumbUp className="icon like" />
+                      <span className="separator" />
+                      <span className="number">{p.dislikes}</span>
+                      <ThumbDown className="icon dislike" />
+                    </LikesContainer>
+                  </HoverContainer>
+                </ImgContainer>
+              );
+            })}
+        </Slider>
+      </SlickWrapper>
     );
   }
 }
