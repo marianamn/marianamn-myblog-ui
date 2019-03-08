@@ -19,7 +19,7 @@ export const SubscriptionSubContainer = styled<SubscriptionProps, "div">("div")`
 
 export const Row = styled<SubscriptionProps, "div">("div")`
   display: flex;
-  align-items: ${({ isMobile, isTablet }) => (!isMobile && !isTablet && "center")};
+  align-items: ${({ isMobile, isTablet }) => !isMobile && !isTablet && "center"};
   flex-direction: ${({ isMobile, isTablet }) => (isMobile || isTablet ? "column" : "row")};
 
   &:first-of-type {
@@ -50,7 +50,7 @@ export const SubscribeBtn = styled<SubscriptionProps, "p">("p")`
   font-size: 13px;
   font-weight: bold;
   text-transform: uppercase;
-  margin-top: ${({ isMobile, isTablet }) => ((isMobile || isTablet) && "15px")};
+  margin-top: ${({ isMobile, isTablet }) => (isMobile || isTablet) && "15px"};
 
   &:hover {
     cursor: pointer;

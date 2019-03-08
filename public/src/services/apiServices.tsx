@@ -56,10 +56,19 @@ const removeJson = async (requestURL: string, payload: any) => {
   return request(`${apiEndpoint}/${requestURL}`, options);
 };
 
+const getInstagramJson = async (requestURL: string) => {
+  const options = {
+    method: "GET",
+  };
+
+  return request(requestURL, options);
+};
+
 export default {
   getJson,
   postJson,
   postFormData,
   putJson,
   removeJson,
+  getInstagramJson,
 };

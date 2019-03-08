@@ -1,5 +1,19 @@
 import * as React from "react";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 import styled from "styled-components";
+import { Post, InstagramPost } from "../../interfaces";
+
+import { selectRecentPosts, selectRecentInstagramPosts } from "./selectors";
+import {
+  Actions,
+  getRecentPosts,
+  GetRecentPosts,
+  getRecentInstagramPosts,
+  GetRecentInstagramPosts,
+} from "./actions";
+import { ApplicationState } from "../../store";
+
 import RecentPosts from "./components/recent-posts";
 import InstagramContainer from "./components/instagram";
 import Subscription from "./components/subscription";
@@ -55,13 +69,22 @@ export const AllRightsReservedContainer = styled("div")`
   opacity: 0.7;
 `;
 
+interface Props {
+  readonly isLoading: boolean;
+  readonly recentPosts: ReadonlyArray<Post>;
+  readonly error: string;
+  readonly instagramPosts?: ReadonlyArray<InstagramPost>;
+  readonly getRecentPosts: () => GetRecentPosts;
+  readonly getRecentInstagramPosts: () => GetRecentInstagramPosts;
+}
+
 interface State {
   readonly containerWidth: number;
 }
 
-export default class Footer extends React.Component<{}, State> {
-  constructor(state: State) {
-    super(state);
+class Footer extends React.Component<Props, State> {
+  constructor(props: Props, state: State) {
+    super(props, state);
     this.state = {
       containerWidth: 0,
     };
@@ -70,6 +93,8 @@ export default class Footer extends React.Component<{}, State> {
   componentDidMount(): void {
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
+
+    this.props.getRecentInstagramPosts();
   }
 
   componentWillUnmount(): void {
@@ -83,9 +108,14 @@ export default class Footer extends React.Component<{}, State> {
 
     return (
       <div>
-        <RecentPosts />
-        <InstagramContainer />
+        <RecentPosts posts={this.props.recentPosts} />
+        <InstagramContainer
+          posts={this.props.instagramPosts}
+          isTablet={isTablet}
+          isMobile={isMobile}
+        />
         <Subscription isTablet={isTablet} isMobile={isMobile} />
+
         <SocialIconsContainer>
           <Icon>
             <Link href={socialMediaLinks.facebook} target="blank">
@@ -105,6 +135,7 @@ export default class Footer extends React.Component<{}, State> {
             </Link>
           </Icon>
         </SocialIconsContainer>
+
         <AllRightsReservedContainer>
           {`${new Date().getFullYear()} ${"\u00A9"} ${footerLabels.allRightsReserved}`}
         </AllRightsReservedContainer>
@@ -116,3 +147,18 @@ export default class Footer extends React.Component<{}, State> {
     this.setState({ containerWidth: window.innerWidth });
   };
 }
+
+const mapStateToProps = ({ footerRecentPostsState }: ApplicationState): Partial<Props> => ({
+  recentPosts: selectRecentPosts(footerRecentPostsState),
+  instagramPosts: selectRecentInstagramPosts(footerRecentPostsState),
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Actions>): Partial<Props> => ({
+  getRecentPosts: () => dispatch(getRecentPosts()),
+  getRecentInstagramPosts: () => dispatch(getRecentInstagramPosts()),
+});
+
+export default connect<Partial<Props>, Partial<Props>, Partial<Props>, ApplicationState>(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Footer);

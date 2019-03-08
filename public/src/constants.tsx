@@ -70,4 +70,7 @@ export const footerLabels = {
   subscribeTitle: "Абониране",
   subscribeText: "Искаш да разбереш първи за нова публикация? Aбонирай се тук",
   emailText: "Имейл адрес",
+  recentPosts: "Последни постове",
+  followOnTwitter: "Следвай в Twitter",
+  newMorePosts: "Още нови постове",
 };

@@ -37,3 +37,10 @@ export interface Post {
   readonly createdAt: string;
   readonly updatedAt: string;
 }
+
+export interface InstagramPost {
+  readonly image: string;
+  readonly link: string;
+  readonly createdAt: string;
+  readonly tags: ReadonlyArray<string>;
+}

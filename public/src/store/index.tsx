@@ -13,6 +13,10 @@ import recentPostsSaga from "../features/home/saga";
 import { recentPostsReducer } from "../features/home/reducer";
 import { State as RecentPostsState } from "../features/home/reducer";
 
+import footerRecentPostsSaga from "../features/footer/saga";
+import { footerRecentPostsReducer } from "../features/footer/reducer";
+import { State as FooterRecentPostsState } from "../features/home/reducer";
+
 // Admin Panel
 import usersSaga from "../features/admin/users/saga";
 import { usersReducer } from "../features/admin/users/reducer";
@@ -24,6 +28,7 @@ export interface ApplicationState {
   readonly loginState: LoginState;
   readonly registerSate: RegisterState;
   readonly recentPostsState: RecentPostsState;
+  readonly footerRecentPostsState: FooterRecentPostsState;
 }
 
 // Additional props for connected React components. This prop is passed by default with `connect()`
@@ -39,9 +44,16 @@ export const rootReducer = combineReducers<ApplicationState>({
   loginState: loginReducer,
   registerSate: registerReducer,
   recentPostsState: recentPostsReducer,
+  footerRecentPostsState: footerRecentPostsReducer,
 });
 
 // tslint:disable-next-line:typedef
 export function* rootSaga() {
-  yield all([fork(usersSaga), fork(loginSaga), fork(registerSaga), fork(recentPostsSaga)]);
+  yield all([
+    fork(usersSaga),
+    fork(loginSaga),
+    fork(registerSaga),
+    fork(recentPostsSaga),
+    fork(footerRecentPostsSaga),
+  ]);
 }
